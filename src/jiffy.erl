@@ -30,7 +30,9 @@ encode(Data, Options) ->
         {error, invalid_string} when ForceUTF8 == true ->
             FixedData = jiffy_utf8:fix(Data),
             encode(FixedData, Options -- [force_utf8]);
-        {error, invalid_object_pair} ->
+        {error, Error} when ((Error =:= invalid_object_pair) or
+                             (Error =:= invalid_object) or
+                             (Error =:= invalid_ejson)) ->
             jiffy_utf8:fix(Data);
         {error, _} = Error ->
             throw(Error);
@@ -41,7 +43,7 @@ encode(Data, Options) ->
     end.
 
 
-finish_decode({bignum, Value}) ->
+finish_decode({bignum, Value}) ->object
     list_to_integer(binary_to_list(Value));
 finish_decode({bignum_e, Value}) ->
     {IVal, EVal} = case string:to_integer(binary_to_list(Value)) of
