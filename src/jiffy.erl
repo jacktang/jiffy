@@ -30,6 +30,8 @@ encode(Data, Options) ->
         {error, invalid_string} when ForceUTF8 == true ->
             FixedData = jiffy_utf8:fix(Data),
             encode(FixedData, Options -- [force_utf8]);
+        {error, invalid_object_pair} ->
+            jiffy_utf8:fix(Data);
         {error, _} = Error ->
             throw(Error);
         {partial, IOData} ->

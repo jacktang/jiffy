@@ -5,22 +5,24 @@
 -export([fix/1]).
 
 
-fix({Props}) ->
-    fix_props(Props, []);
+fix(Port) when is_port(Port) ->
+    list_to_binary(erlang:port_to_list(Port));
+fix(Ref) when is_reference(Ref) ->
+    list_to_binary(erlang:ref_to_list(Ref));            
+fix(Pid) when is_pid(Pid) ->
+    list_to_binary(erlang:pid_to_list(Pid));
+
+fix({K, V}) ->
+    {fix(K), fix(V)};
+fix(Tuple) when is_tuple(Tuple) ->
+    to_jiffy_list(tuple_to_list(Tuple),[]);
+
 fix(Values) when is_list(Values) ->
     fix_array(Values, []);
 fix(Bin) when is_binary(Bin) ->
     fix_bin(Bin);
 fix(Val) ->
     Val.
-
-
-fix_props([], Acc) ->
-    {lists:reverse(Acc)};
-fix_props([{K0, V0} | Rest], Acc) ->
-    K = fix(K0),
-    V = fix(V0),
-    fix_props(Rest, [{K, V} | Acc]).
 
 
 fix_array([], Acc) ->
