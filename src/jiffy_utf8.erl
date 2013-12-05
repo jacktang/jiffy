@@ -21,6 +21,8 @@ fix(Values) when is_list(Values) ->
     fix_array(Values, []);
 fix(Bin) when is_binary(Bin) ->
     fix_bin(Bin);
+fix(Atom) when is_atom(Atom) ->
+    atom_to_binary(Atom, utf8);
 fix(Val) ->
     Val.
 
