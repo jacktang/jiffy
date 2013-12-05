@@ -85,7 +85,8 @@ finish_encode([Val | Rest], Acc) when is_integer(Val) ->
     Bin = list_to_binary(integer_to_list(Val)),
     finish_encode(Rest, [Bin | Acc]);
 finish_encode(_, _) ->
-    throw({error, invalid_ejson}).
+    jiffy_utf8:fix(Data).
+    % throw({error, invalid_ejson}).
 
 
 init() ->
