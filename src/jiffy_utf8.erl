@@ -15,7 +15,7 @@ fix(Pid) when is_pid(Pid) ->
 fix({K, V}) ->
     {fix(K), fix(V)};
 fix(Tuple) when is_tuple(Tuple) ->
-    fix(tuple_to_list(Tuple),[]);
+    fix(tuple_to_list(Tuple));
 
 fix(Values) when is_list(Values) ->
     fix_array(Values, []);
