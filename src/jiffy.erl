@@ -43,7 +43,7 @@ encode(Data, Options) ->
     end.
 
 
-finish_decode({bignum, Value}) ->object
+finish_decode({bignum, Value}) ->
     list_to_integer(binary_to_list(Value));
 finish_decode({bignum_e, Value}) ->
     {IVal, EVal} = case string:to_integer(binary_to_list(Value)) of
